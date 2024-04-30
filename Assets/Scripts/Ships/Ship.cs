@@ -1,4 +1,5 @@
-﻿using Configs;
+﻿using System;
+using Configs;
 using Factories;
 using Rx;
 using UniRx;
@@ -17,18 +18,16 @@ namespace Ships
         protected virtual Vector2 _direction => Vector2.zero;
 
         private BulletSpawnData _bulletSpawnData = new();
-        private CompositeDisposable _disposables = new();
-
+        private IDisposable _shootUpdate;
+        
         private void OnValidate()
         {
             if(_spriteRenderer == null)
                 _spriteRenderer = GetComponent<SpriteRenderer>();
         }
         
-        private void OnDestroy () { 
-            if (_disposables != null) {
-                _disposables.Dispose ();
-            }
+        protected virtual void OnDestroy () {
+            _shootUpdate?.Dispose();
         }
         
         public override void Construct(GameObjectConfig config)
@@ -49,18 +48,17 @@ namespace Ships
         
         protected void SetBullet(BulletConfig newConfig)
         {
-            _disposables.Dispose();
-            _disposables = new CompositeDisposable();
+            _shootUpdate?.Dispose();
             
             if (newConfig == null)
                 return;
             
             _bulletSpawnData.config = newConfig;
             
-            Observable.Timer (System.TimeSpan.FromSeconds (_cooldowm))
+            _shootUpdate = Observable.Timer (TimeSpan.FromSeconds (_cooldowm))
                 .Repeat () 
                 .Subscribe (_ => Shoot()
-                ).AddTo (_disposables); 
+                ); 
         }
         
         protected abstract void Die();

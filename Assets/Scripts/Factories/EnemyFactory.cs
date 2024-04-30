@@ -2,6 +2,7 @@
 using Rx;
 using Ships;
 using UniRx;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace Factories
@@ -49,10 +50,13 @@ namespace Factories
                     var position = levelConfig.startPosition + 
                                    new Vector2(-levelConfig.offset.x * (idx % levelConfig.columnCount),
                                        levelConfig.offset.y * (idx / levelConfig.columnCount));
-                    ConstructNewObject(sequence.enemy, position);
+                    var newEnemy = ConstructNewObject(sequence.enemy, position) as Enemy;
+                    newEnemy.SetLevelData(idx, levelConfig.columnCount, levelConfig.offset);
                     idx++;
                 }
             }
         }
+        
+        
     }
 }
