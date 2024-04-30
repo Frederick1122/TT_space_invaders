@@ -1,5 +1,6 @@
 ﻿using Configs;
 using Rx;
+using Ships;
 using UniRx;
 using UnityEngine;
 
@@ -9,23 +10,30 @@ namespace Factories
     {
         protected override string _secondPrefabPath => "Enemy";
         
-        private CompositeDisposable disposables;
+        private CompositeDisposable _disposables = new();
 
         public override void Init()
         {
             base.Init();
-            disposables = new CompositeDisposable();
+            
             MessageBroker.Default
                 .Receive<MessageBase>() 
-                .Where(msg => msg.id == ServiceShareData.MSG_LEVEL)
-                .Subscribe(msg => { 
-                     SetupNewLevel((LevelConfig)msg.data); 
-                }).AddTo (disposables);
+                .Where(msg => msg.id == ServiceShareData.MSG_SETUP_NEW_LEVEL)
+                .Subscribe(msg => 
+                     SetupNewLevel((LevelConfig)msg.data))
+                .AddTo(_disposables);
+            
+            MessageBroker.Default
+                .Receive<MessageBase>() 
+                .Where(msg => msg.id == ServiceShareData.MSG_DESTROY_ENEMY)
+                .Subscribe(msg =>  
+                    DeconstructObject((Enemy)msg.data))
+                .AddTo(_disposables);
         }
         
-        void OnDestroy () { 
-            if (disposables != null) {
-                disposables.Dispose ();
+       private void OnDestroy () { 
+            if (_disposables != null) {
+                _disposables.Dispose ();
             }
         }
 

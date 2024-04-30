@@ -24,13 +24,14 @@ namespace Factories
             _pool = new ObjectPool(prefab, _initialPoolSize);
         }
 
-        public void ConstructNewObject(GameObjectConfig config, Vector2 position)
+        public PoolObject ConstructNewObject(GameObjectConfig config, Vector2 position)
         {
             var newObject = _pool.Take();
             newObject.Construct(config);
             newObject.transform.position = position;
             newObject.transform.SetParent(transform);
             _activeObjects.Add(newObject);
+            return newObject;
         }
 
         public void DeconstructObject(PoolObject poolObject)
