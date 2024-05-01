@@ -23,7 +23,6 @@ namespace Ships
                     ServiceShareData.MSG_DESTROY_BULLET,
                     this
                 ));
-
         }
 
         public override void Construct(GameObjectConfig config)

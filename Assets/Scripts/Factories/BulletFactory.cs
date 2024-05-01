@@ -27,6 +27,12 @@ namespace Factories
                 .Subscribe(msg =>
                     DeconstructObject((PoolObject)msg.data))
                 .AddTo(_disposables);
+            
+            MessageBroker.Default
+                .Receive<MessageBase>() 
+                .Where(msg => msg.id == ServiceShareData.MSG_RESET_LEVEL)
+                .Subscribe(_ => DeconstructAllObjects())
+                .AddTo(_disposables);
         }
         
         private void OnDestroy () { 
