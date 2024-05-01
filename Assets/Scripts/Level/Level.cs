@@ -3,6 +3,7 @@ using System.Linq;
 using Configs;
 using MonoInstallers;
 using Rx;
+using Ships;
 using UniRx;
 using UnityEngine;
 
@@ -17,6 +18,8 @@ namespace Level
         private int _currentLevelIdx;
         private CompositeDisposable _disposables = new();
 
+        private Player _player; 
+
         public void Init()
         {
             _levelConfigs.AddRange(Resources.LoadAll<LevelConfig>(LEVEL_CONFIGS_PATH));
@@ -30,6 +33,9 @@ namespace Level
                 .Receive<MessageBase>() 
                 .Where(msg => msg.id == ServiceShareData.MSG_RESET_LEVEL)
                 .Subscribe(_ => ResetLevel()).AddTo(_disposables);
+
+            _player = FindObjectOfType<Player>();
+            _player.Construct();
         }
         
         private void OnDestroy () { 

@@ -20,7 +20,7 @@ namespace Ships
         private BulletSpawnData _bulletSpawnData = new();
         private IDisposable _shootUpdate;
         
-        private void OnValidate()
+        protected virtual void OnValidate()
         {
             if(_spriteRenderer == null)
                 _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -30,7 +30,7 @@ namespace Ships
             _shootUpdate?.Dispose();
         }
         
-        public override void Construct(GameObjectConfig config)
+        public override void Construct(GameObjectConfig config = null)
         {
             _bulletSpawnData.position = _bulletSpawnPosition;
             _bulletSpawnData.direction = _direction;
