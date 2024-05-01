@@ -66,7 +66,7 @@ namespace Ships
                 .Subscribe (_ => Shoot()); 
         }
 
-        protected void Shoot()
+        protected virtual void Shoot()
         {
             MessageBroker.Default
                 .Publish (MessageBase.Create (

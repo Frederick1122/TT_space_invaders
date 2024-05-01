@@ -22,7 +22,8 @@ namespace Ships
         private ItemSpawnData _itemSpawnData;
 
         protected override void OnDestroy () { 
-            _disposables.Dispose();
+            _disposables?.Dispose();
+            base.OnDestroy();
         }
         
         public void SetLevelData(int idx, int columnCount, Vector2 offset)
@@ -56,6 +57,10 @@ namespace Ships
                     position = _bulletSpawnPosition,
                     config = _config.itemConfig
                 };
+            }
+            else
+            {
+                _itemSpawnData = null;
             }
             
             base.Construct(config);

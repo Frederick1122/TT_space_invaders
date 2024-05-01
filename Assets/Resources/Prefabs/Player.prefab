@@ -163,7 +163,7 @@ MonoBehaviour:
   _rb: {fileID: 2993591120544678893}
   _inputSystem: {fileID: 7363549319977682744}
   _speed: 10
-  _bulletConfig: {fileID: 11400000, guid: 48f088db4fe1cfc42b491b8fb4e82115, type: 2}
+  _startBulletConfig: {fileID: 11400000, guid: 48f088db4fe1cfc42b491b8fb4e82115, type: 2}
 --- !u!50 &2993591120544678893
 Rigidbody2D:
   serializedVersion: 4

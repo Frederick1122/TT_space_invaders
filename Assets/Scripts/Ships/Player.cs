@@ -12,9 +12,12 @@ namespace Ships
         [SerializeField] private PlayerInputSystem _inputSystem;
         
         [SerializeField] private float _speed;
-        [SerializeField] private BulletConfig _bulletConfig;
+        [SerializeField] private BulletConfig _startBulletConfig;
 
         protected override Vector2 _direction => Vector2.up;
+        private Vector2 _startPosition;
+        
+        private CompositeDisposable _disposables = new();
 
         protected override void OnValidate()
         {
@@ -26,30 +29,48 @@ namespace Ships
             
             base.OnValidate();
         }
-
-        public override void Construct(GameObjectConfig config = null)
-        {
-            base.Construct(config);
-            SetBullet(_bulletConfig);   
-            Input.simulateMouseWithTouches = true;
-        }
-
-        protected override void Die()
-        {
-            MessageBroker.Default
-                .Publish (MessageBase.Create (
-                    this, 
-                    ServiceShareData.MSG_RESET_LEVEL
-                ));
-            
-            base.Die();
-        }
-
+        
         private void FixedUpdate()
         {
             Move();
         }
 
+        protected override void OnDestroy()
+        {
+            _disposables.Dispose();
+            base.OnDestroy();
+        }
+
+        public override void Construct(GameObjectConfig config = null)
+        {
+            base.Construct(config);
+            _startPosition = transform.position;
+            Reset();
+            
+            MessageBroker.Default
+                .Receive<MessageBase>() 
+                .Where(msg => msg.id == ServiceShareData.MSG_RESET_LEVEL)
+                .Subscribe(_ => Reset())
+                .AddTo(_disposables);
+        }
+
+        protected override void Die()
+        {
+            base.Die();
+
+            MessageBroker.Default
+                .Publish (MessageBase.Create (
+                    this, 
+                    ServiceShareData.MSG_RESET_LEVEL
+                ));
+        }
+
+        private void Reset()
+        {
+            transform.position = _startPosition;
+            SetBullet(_startBulletConfig);
+        }
+        
         private void Move()
         {
             var horizontalInput = _inputSystem.HorizontalInput;
