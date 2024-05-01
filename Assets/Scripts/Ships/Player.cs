@@ -74,8 +74,9 @@ namespace Ships
         private void Move()
         {
             var horizontalInput = _inputSystem.HorizontalInput;
+            var verticalInput = _inputSystem.VerticalInput;
 
-            _rb.velocity = new Vector2(horizontalInput * _speed, 0f);
+            _rb.velocity = new Vector2(horizontalInput * _speed, verticalInput * _speed);
         }
     }
 }

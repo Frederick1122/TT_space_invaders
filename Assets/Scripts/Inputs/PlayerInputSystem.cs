@@ -5,9 +5,12 @@ namespace Inputs
     public class PlayerInputSystem : MonoBehaviour, IInputSystem
     {
         public float HorizontalInput => _horizontalInput;
+        public float VerticalInput => _verticalInput;
+        
         private float _horizontalInput;
+        private float _verticalInput;
 
-        protected IInputHandler _inputHandler;
+        private IInputHandler _inputHandler;
 
         private void Awake()
         {
@@ -18,6 +21,7 @@ namespace Inputs
 // #endif
             
             _inputHandler.OnHorizontalAxisChange += OnHorizontalAxisChange;
+            _inputHandler.OnVerticalAxisChange += OnVerticalAxisChange;
         }
         
         protected virtual void OnDestroy()
@@ -25,10 +29,14 @@ namespace Inputs
             if (_inputHandler == null)
                 return;
 
-            _inputHandler.OnHorizontalAxisChange += OnHorizontalAxisChange;
+            _inputHandler.OnHorizontalAxisChange -= OnHorizontalAxisChange;
+            _inputHandler.OnVerticalAxisChange -= OnVerticalAxisChange;
         }
         
-        protected void OnHorizontalAxisChange(float value) =>
+        private void OnHorizontalAxisChange(float value) =>
             _horizontalInput = value;
+
+        private void OnVerticalAxisChange(float value) =>
+            _verticalInput = value;
     }
 }
