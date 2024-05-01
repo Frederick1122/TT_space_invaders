@@ -30,12 +30,12 @@ namespace Ships
             
             _moveUpdate?.Dispose();
 
-            _moveUpdate = Observable.Timer (TimeSpan.FromSeconds (_cooldowm))
+            _moveUpdate = Observable.Timer (TimeSpan.FromSeconds (_cooldown))
                 .Repeat () 
                 .Subscribe (_ => Move()).AddTo(_disposables);
 
             Observable.Return(Unit.Default)
-                .Delay(TimeSpan.FromSeconds(_cooldowm / 2))
+                .Delay(TimeSpan.FromSeconds(_cooldown / 2))
                 .Subscribe(_ => SetBullet(_config.bulletConfig))
                 .AddTo(_disposables);
         }

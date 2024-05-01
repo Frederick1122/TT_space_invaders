@@ -20,6 +20,13 @@ namespace Factories
                 .Subscribe(msg =>
                     GenerateBullet((BulletSpawnData)msg.data))
                 .AddTo(_disposables);
+            
+            MessageBroker.Default
+                .Receive<MessageBase>() 
+                .Where(msg => msg.id == ServiceShareData.MSG_DESTROY_BULLET)
+                .Subscribe(msg =>
+                    DeconstructObject((PoolObject)msg.data))
+                .AddTo(_disposables);
         }
         
         private void OnDestroy () { 
@@ -30,6 +37,7 @@ namespace Factories
         {
             var newBullet = ConstructNewObject(data.config, data.position.position) as Bullet;
             newBullet.SetDirection(data.direction);
+            newBullet.gameObject.layer = data.layerIndex;
         }
     }
 }

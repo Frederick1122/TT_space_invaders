@@ -1,5 +1,8 @@
-﻿using Configs;
+﻿using System;
+using Configs;
 using Factories;
+using Rx;
+using UniRx;
 using UnityEngine;
 
 namespace Ships
@@ -8,15 +11,26 @@ namespace Ships
     {
         private BulletConfig _config;
         private Vector2 _direction = Vector2.zero;
-        private bool _isEnemy; 
-        
+
+        private void OnTriggerEnter2D(Collider2D col)
+        {
+            if (col.TryGetComponent(out Ship ship)) 
+                ship.GetDamage(_config.damage);
+            
+            MessageBroker.Default
+                .Publish (MessageBase.Create (
+                    this, 
+                    ServiceShareData.MSG_DESTROY_BULLET,
+                    this
+                ));
+
+        }
+
         public override void Construct(GameObjectConfig config)
         {
             _config = (BulletConfig) config;
         }
 
-        public void SetAffiliation(bool isEnemy) => _isEnemy = isEnemy;
-        
         public void SetDirection(Vector2 direction) => _direction = direction.normalized;
 
         public void Update()

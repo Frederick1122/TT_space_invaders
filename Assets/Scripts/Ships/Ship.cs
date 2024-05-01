@@ -12,13 +12,15 @@ namespace Ships
     {
         [SerializeField] protected SpriteRenderer _spriteRenderer;
         [SerializeField] private Transform _bulletSpawnPosition;
-        
-        protected ItemConfig _item;
-        protected float _cooldowm = 1f;
-        protected virtual Vector2 _direction => Vector2.zero;
 
+        protected int _hp = 1;
+        protected ItemConfig _item;
+        protected float _cooldown = 1f;
+        protected virtual Vector2 _direction => Vector2.zero;
+        
         private BulletSpawnData _bulletSpawnData = new();
         private IDisposable _shootUpdate;
+        
         
         protected virtual void OnValidate()
         {
@@ -34,6 +36,15 @@ namespace Ships
         {
             _bulletSpawnData.position = _bulletSpawnPosition;
             _bulletSpawnData.direction = _direction;
+            _bulletSpawnData.layerIndex = gameObject.layer;
+        }
+
+        public void GetDamage(int damage)
+        {
+            _hp -= damage;
+            
+            if (_hp < 0)
+                Die();
         }
 
         protected void Shoot()
@@ -55,7 +66,7 @@ namespace Ships
             
             _bulletSpawnData.config = newConfig;
             
-            _shootUpdate = Observable.Timer (TimeSpan.FromSeconds (_cooldowm))
+            _shootUpdate = Observable.Timer (TimeSpan.FromSeconds (_cooldown))
                 .Repeat () 
                 .Subscribe (_ => Shoot()
                 ); 

@@ -11,6 +11,7 @@ namespace Configs
 
     public class BulletSpawnData
     {
+        public int layerIndex;
         public Transform position;
         public Vector2 direction;
         public BulletConfig config;
