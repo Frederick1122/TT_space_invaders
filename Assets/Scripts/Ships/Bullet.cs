@@ -1,5 +1,4 @@
-﻿using System;
-using Configs;
+﻿using Configs;
 using Factories;
 using UnityEngine;
 
@@ -9,12 +8,15 @@ namespace Ships
     {
         private BulletConfig _config;
         private Vector2 _direction = Vector2.zero;
+        private bool _isEnemy; 
         
         public override void Construct(GameObjectConfig config)
         {
             _config = (BulletConfig) config;
         }
 
+        public void SetAffiliation(bool isEnemy) => _isEnemy = isEnemy;
+        
         public void SetDirection(Vector2 direction) => _direction = direction.normalized;
 
         public void Update()

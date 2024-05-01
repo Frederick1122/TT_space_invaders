@@ -47,9 +47,16 @@ namespace Factories
             {
                 for (var i = 0; i < sequence.count; i++)
                 {
-                    var position = levelConfig.startPosition + 
-                                   new Vector2(-levelConfig.offset.x * (idx % levelConfig.columnCount),
-                                       levelConfig.offset.y * (idx / levelConfig.columnCount));
+                    var currentOffset = Vector2.zero;
+                    currentOffset.y = levelConfig.offset.y * (idx / levelConfig.columnCount);
+                    if (idx / levelConfig.columnCount % 2 == 0)
+                        currentOffset.x = -levelConfig.offset.x * (idx % levelConfig.columnCount);
+                    else
+                        currentOffset.x = -levelConfig.offset.x *
+                                          (levelConfig.columnCount - idx % levelConfig.columnCount - 1);
+
+                    var position = levelConfig.startPosition + currentOffset; 
+                                   
                     var newEnemy = ConstructNewObject(sequence.enemy, position) as Enemy;
                     newEnemy.SetLevelData(idx, levelConfig.columnCount, levelConfig.offset);
                     idx++;

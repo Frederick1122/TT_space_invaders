@@ -16,4 +16,4 @@ MonoBehaviour:
   configKey: 
   icon: {fileID: 1669199762, guid: c3acf8cd45596ee4787370c2d22f6a63, type: 3}
   damage: 1
-  speed: 2
+  speed: 4

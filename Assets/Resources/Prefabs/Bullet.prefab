@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1006285267259447767, guid: aaeb12daa8f709241bad5a531c0231a3, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1503370555610668083, guid: aaeb12daa8f709241bad5a531c0231a3, type: 3}
       propertyPath: m_Name
       value: Bullet

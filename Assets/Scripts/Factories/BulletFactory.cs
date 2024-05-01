@@ -23,9 +23,7 @@ namespace Factories
         }
         
         private void OnDestroy () { 
-            if (_disposables != null) {
-                _disposables.Dispose ();
-            }
+            _disposables.Dispose ();
         }
 
         private void GenerateBullet(BulletSpawnData data)

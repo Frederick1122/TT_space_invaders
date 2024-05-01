@@ -8,30 +8,18 @@ namespace Ships
 {
     public class Enemy : Ship
     {
-        // delete this
-        public bool isDead;
-
-        private void Update()
-        {
-            if (!isDead)
-                return;
-
-            isDead = false;
-            Die();
-        }
-
-        //
-        
         protected override Vector2 _direction => Vector2.down;
 
         private int _idx;
         private int _columnCount;
         private Vector2 _offset;
-
+        private EnemyConfig _config;
+        
         private IDisposable _moveUpdate;
+        private CompositeDisposable _disposables = new();
 
         protected override void OnDestroy () { 
-            _moveUpdate?.Dispose();
+            _disposables.Dispose();
         }
         
         public void SetLevelData(int idx, int columnCount, Vector2 offset)
@@ -44,15 +32,18 @@ namespace Ships
 
             _moveUpdate = Observable.Timer (TimeSpan.FromSeconds (_cooldowm))
                 .Repeat () 
-                .Subscribe (_ => Move()
-                );
+                .Subscribe (_ => Move()).AddTo(_disposables);
+
+            Observable.Return(Unit.Default)
+                .Delay(TimeSpan.FromSeconds(_cooldowm / 2))
+                .Subscribe(_ => SetBullet(_config.bulletConfig))
+                .AddTo(_disposables);
         }
         
         public override void Construct(GameObjectConfig config)
         {
-            var castConfig = (EnemyConfig) config;
-            _spriteRenderer.sprite = castConfig.icon;
-            SetBullet(castConfig.bulletConfig);
+            _config = (EnemyConfig) config;
+            _spriteRenderer.sprite = _config.icon;
 
             base.Construct(config);
         }
@@ -70,10 +61,13 @@ namespace Ships
 
         private void Move()
         {
+            if (_idx == -1) 
+                _idx -= _columnCount;
+
             if (_idx % _columnCount == 0)
                 Move(Vector2.down);
             else
-                Move(_idx / _columnCount % 2 == 0 ? Vector2.left : Vector2.right);
+                Move(_idx / _columnCount % 2 == 0 ? Vector2.right : Vector2.left);
 
             _idx--;
         }
