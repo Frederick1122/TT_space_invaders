@@ -8,6 +8,8 @@ namespace Ships
 {
     public class Enemy : Ship
     {
+        private const float MOVEMENT_COOLDOWN = 1f;
+
         protected override Vector2 _direction => Vector2.down;
 
         private int _idx;
@@ -16,7 +18,8 @@ namespace Ships
         private EnemyConfig _config;
         
         private IDisposable _moveUpdate;
-        private CompositeDisposable _disposables = new();
+        private CompositeDisposable _disposables;
+        private ItemSpawnData _itemSpawnData;
 
         protected override void OnDestroy () { 
             _disposables.Dispose();
@@ -27,36 +30,57 @@ namespace Ships
             _idx = idx;
             _columnCount = columnCount;
             _offset = offset;
-            
+
             _moveUpdate?.Dispose();
 
-            _moveUpdate = Observable.Timer (TimeSpan.FromSeconds (_cooldown))
+            _moveUpdate = Observable.Timer (TimeSpan.FromSeconds (MOVEMENT_COOLDOWN))
                 .Repeat () 
                 .Subscribe (_ => Move()).AddTo(_disposables);
 
             Observable.Return(Unit.Default)
-                .Delay(TimeSpan.FromSeconds(_cooldown / 2))
+                .Delay(TimeSpan.FromSeconds(MOVEMENT_COOLDOWN / 2))
                 .Subscribe(_ => SetBullet(_config.bulletConfig))
                 .AddTo(_disposables);
         }
         
         public override void Construct(GameObjectConfig config)
         {
+            _disposables = new CompositeDisposable();
             _config = (EnemyConfig) config;
             _spriteRenderer.sprite = _config.icon;
 
+            if (_config.itemConfig != null)
+            {
+                _itemSpawnData = new ItemSpawnData()
+                {
+                    position = _bulletSpawnPosition,
+                    config = _config.itemConfig
+                };
+            }
+            
             base.Construct(config);
         }
 
         protected override void Die()
         {
+            if (_itemSpawnData != null)
+            {
+                MessageBroker.Default
+                    .Publish (MessageBase.Create (
+                        this, 
+                        ServiceShareData.MSG_SPAWN_ITEM,
+                        _itemSpawnData));
+            }
+            
             MessageBroker.Default
                 .Publish(MessageBase.Create(
                     this,
                     ServiceShareData.MSG_DESTROY_ENEMY,
-                    this
-                ));
-            ;
+                    this));
+            
+            _disposables.Dispose();
+            
+            base.Die();
         }
 
         private void Move()

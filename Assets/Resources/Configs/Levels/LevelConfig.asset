@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccaf303a9fe141b881e0c849caae1555, type: 3}
   m_Name: LevelConfig
   m_EditorClassIdentifier: 
-  configName: 
-  configKey: 
   startPosition: {x: 2.5, y: 1}
   offset: {x: 0.8, y: 0.8}
   columnCount: 7
   sequences:
-  - count: 10
+  - count: 1
+    enemy: {fileID: 11400000, guid: ce5fa6056df4b514999a0eab19bb62c6, type: 2}
+  - count: 1
     enemy: {fileID: 11400000, guid: 20f36d6018a26a946999f0349f9ca02c, type: 2}

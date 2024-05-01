@@ -42,8 +42,7 @@ namespace Factories
         private void GenerateBullet(BulletSpawnData data)
         {
             var newBullet = ConstructNewObject(data.config, data.position.position) as Bullet;
-            newBullet.SetDirection(data.direction);
-            newBullet.gameObject.layer = data.layerIndex;
+            newBullet.SetStartData(data.direction, data.layerIndex);
         }
     }
 }

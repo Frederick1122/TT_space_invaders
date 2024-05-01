@@ -7,6 +7,7 @@ namespace Configs
     {
         public int damage;
         public float speed;
+        public float cooldown;
     }
 
     public class BulletSpawnData

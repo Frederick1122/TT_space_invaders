@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   configName: 
   configKey: 
-  icon: {fileID: 0}
+  icon: {fileID: -900785929, guid: c3acf8cd45596ee4787370c2d22f6a63, type: 3}
   bullet: {fileID: 11400000, guid: 3b9094373d0c8ad4ab731cd099024717, type: 2}

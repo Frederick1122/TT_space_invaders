@@ -16,6 +16,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bullet
       objectReference: {fileID: 0}
+    - target: {fileID: 1503370555610668083, guid: aaeb12daa8f709241bad5a531c0231a3, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8074953873866219350, guid: aaeb12daa8f709241bad5a531c0231a3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8074953873866219350, guid: aaeb12daa8f709241bad5a531c0231a3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8074953873866219350, guid: aaeb12daa8f709241bad5a531c0231a3, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8074953873866219350, guid: aaeb12daa8f709241bad5a531c0231a3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -56,6 +72,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8074953873866219350, guid: aaeb12daa8f709241bad5a531c0231a3, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -64,6 +84,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: -1149035193555153815}
   m_SourcePrefab: {fileID: 100100000, guid: aaeb12daa8f709241bad5a531c0231a3, type: 3}
+--- !u!212 &1433136491726983565 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 1263321324653460235, guid: aaeb12daa8f709241bad5a531c0231a3, type: 3}
+  m_PrefabInstance: {fileID: 174441947743414918}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1636695114172135093 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1503370555610668083, guid: aaeb12daa8f709241bad5a531c0231a3, type: 3}
@@ -81,3 +106,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8277c4cc6a374ac19791b437b8606e20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 1433136491726983565}

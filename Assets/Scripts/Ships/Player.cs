@@ -41,6 +41,8 @@ namespace Ships
                     this, 
                     ServiceShareData.MSG_RESET_LEVEL
                 ));
+            
+            base.Die();
         }
 
         private void FixedUpdate()

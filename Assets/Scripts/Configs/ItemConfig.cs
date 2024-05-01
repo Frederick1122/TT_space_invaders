@@ -7,4 +7,10 @@ namespace Configs
     {
         public BulletConfig bullet;
     }
+
+    public class ItemSpawnData
+    {
+        public Transform position;
+        public ItemConfig config;
+    }
 }

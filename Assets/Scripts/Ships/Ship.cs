@@ -11,16 +11,13 @@ namespace Ships
     public abstract class Ship : PoolObject
     {
         [SerializeField] protected SpriteRenderer _spriteRenderer;
-        [SerializeField] private Transform _bulletSpawnPosition;
+        [SerializeField] protected Transform _bulletSpawnPosition;
 
-        protected int _hp = 1;
-        protected ItemConfig _item;
-        protected float _cooldown = 1f;
+        private int _hp = 1;
         protected virtual Vector2 _direction => Vector2.zero;
         
         private BulletSpawnData _bulletSpawnData = new();
         private IDisposable _shootUpdate;
-        
         
         protected virtual void OnValidate()
         {
@@ -37,14 +34,36 @@ namespace Ships
             _bulletSpawnData.position = _bulletSpawnPosition;
             _bulletSpawnData.direction = _direction;
             _bulletSpawnData.layerIndex = gameObject.layer;
+
+            _hp = 1;
+            
+            if (config == null)
+                return;
+            
+            var shipConfig = (ShipConfig) config;
+            _hp = shipConfig.hp;
         }
 
         public void GetDamage(int damage)
         {
             _hp -= damage;
             
-            if (_hp < 0)
+            if (_hp <= 0)
                 Die();
+        }
+
+        public void SetBullet(BulletConfig newConfig)
+        {
+            _shootUpdate?.Dispose();
+            
+            if (newConfig == null)
+                return;
+            
+            _bulletSpawnData.config = newConfig;
+            
+            _shootUpdate = Observable.Timer (TimeSpan.FromSeconds (newConfig.cooldown))
+                .Repeat () 
+                .Subscribe (_ => Shoot()); 
         }
 
         protected void Shoot()
@@ -56,22 +75,10 @@ namespace Ships
                     _bulletSpawnData
                 ));
         }
-        
-        protected void SetBullet(BulletConfig newConfig)
+
+        protected virtual void Die()
         {
-            _shootUpdate?.Dispose();
-            
-            if (newConfig == null)
-                return;
-            
-            _bulletSpawnData.config = newConfig;
-            
-            _shootUpdate = Observable.Timer (TimeSpan.FromSeconds (_cooldown))
-                .Repeat () 
-                .Subscribe (_ => Shoot()
-                ); 
+            _shootUpdate?.Dispose();   
         }
-        
-        protected abstract void Die();
     }
 }
