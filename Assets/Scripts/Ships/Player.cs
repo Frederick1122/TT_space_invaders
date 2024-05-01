@@ -8,7 +8,9 @@ namespace Ships
 {
     public class Player : Ship
     {
+        [SerializeField] private Rigidbody2D _rb;
         [SerializeField] private PlayerInputSystem _inputSystem;
+        
         [SerializeField] private float _speed;
         [SerializeField] private BulletConfig _bulletConfig;
 
@@ -18,6 +20,9 @@ namespace Ships
         {
             if (_inputSystem == null)
                 _inputSystem = GetComponent<PlayerInputSystem>();
+
+            if (_rb == null)
+                _rb = GetComponent<Rigidbody2D>();
             
             base.OnValidate();
         }
@@ -38,7 +43,7 @@ namespace Ships
                 ));
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             Move();
         }
@@ -46,7 +51,8 @@ namespace Ships
         private void Move()
         {
             var horizontalInput = _inputSystem.HorizontalInput;
-            transform.Translate(Vector2.left * horizontalInput * _speed * Time.deltaTime);
+
+            _rb.velocity = new Vector2(horizontalInput * _speed, 0f);
         }
     }
 }
