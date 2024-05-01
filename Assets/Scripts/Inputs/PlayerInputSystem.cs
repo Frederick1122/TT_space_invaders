@@ -11,11 +11,11 @@ namespace Inputs
 
         private void Awake()
         {
-// #if UNITY_ANDROID 
-//             _inputHandler = gameObject.AddComponent(typeof(MobileInputHandler)) as IInputHandler;
-// #else
+#if UNITY_ANDROID 
+            _inputHandler = gameObject.AddComponent(typeof(MobileInputHandler)) as IInputHandler;
+#else
             _inputHandler = gameObject.AddComponent(typeof(KeyboardInputHandler)) as IInputHandler;
-// #endif
+#endif
             
             _inputHandler.OnHorizontalAxisChange += OnHorizontalAxisChange;
         }

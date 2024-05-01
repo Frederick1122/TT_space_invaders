@@ -19,6 +19,12 @@ namespace Ships
         
         private CompositeDisposable _disposables = new();
 
+        private void OnCollisionEnter2D(Collision2D col)
+        {
+            if (col.gameObject.TryGetComponent(out Ship _)) 
+                Die();
+        }
+
         protected override void OnValidate()
         {
             if (_inputSystem == null)

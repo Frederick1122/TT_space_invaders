@@ -16,7 +16,13 @@ MonoBehaviour:
   offset: {x: 0.8, y: 0.8}
   columnCount: 7
   sequences:
-  - count: 1
-    enemy: {fileID: 11400000, guid: ce5fa6056df4b514999a0eab19bb62c6, type: 2}
+  - count: 14
+    enemy: {fileID: 11400000, guid: 20f36d6018a26a946999f0349f9ca02c, type: 2}
   - count: 1
     enemy: {fileID: 11400000, guid: 20f36d6018a26a946999f0349f9ca02c, type: 2}
+  - count: 1
+    enemy: {fileID: 11400000, guid: ce5fa6056df4b514999a0eab19bb62c6, type: 2}
+  - count: 4
+    enemy: {fileID: 11400000, guid: 20f36d6018a26a946999f0349f9ca02c, type: 2}
+  - count: 1
+    enemy: {fileID: 11400000, guid: ce5fa6056df4b514999a0eab19bb62c6, type: 2}
